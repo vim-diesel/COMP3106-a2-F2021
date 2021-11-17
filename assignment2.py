@@ -2,22 +2,8 @@
 
 
 from csv import reader
-
-import skfuzzy as fuzz
 import numpy as np
-import matplotlib.pyplot as plt
 
-
-class memberFn():
-    "A membership function data structure"
-
-    def __init__(self, a=0, b=0, c=0, d=0) -> None:
-        self.a = a
-        self.b = b
-        self.c = c
-        self.d = d
-
-    #def Calculate(propBlack, topProp, leftProp):
 
 
 
@@ -119,52 +105,88 @@ def fuzzy_classifier(input_filepath):
     leftProp = float(blackLeftTotal / blackTotal)
     # value check
     print()
-    print('BT: ', blackTotal)
-    print('BTop: ', blackTopTotal)
-    print('BLeft: ', blackLeftTotal)
+    print('propBlack: ', propBlack)
+    print('topProp: ', topProp)
+    print('leftProp: ', leftProp)
     ####
-    print("propBlack: ", round(propBlack,2))
     print()
     
     x = np.arange(0.,1.,0.001) # our domain from 0 to 1
 
     # membership functions
-    mfx_pblow = fuzz.trapmf(x, (0,0,0.3,0.4))
-    mfx_pbmed = fuzz.trapmf(x, (0.3,0.4,0.4,0.5))
-    mfx_pbhigh = fuzz.trapmf(x, (0.4,0.5,1,1))
+    def memby_func(x,a,b,c,d):
+        if x <= a:
+            return 0
+        elif a < x < b:
+            return (x-a)/(b-a)
+        elif b<=x<=c:
+            return 1
+        elif c < x < d:
+            return (d-x)/(d-c)
+        elif d <= x:
+            return 0
+        else:
+            print("No possible return value found.")
+            return -1
 
-    mfx_tplow = fuzz.trapmf(x, (0,0,0.3,0.4))
-    mfx_tpmed = fuzz.trapmf(x, (0.3,0.4,0.5,0.6))
-    mfx_tphigh = fuzz.trapmf(x, (0.5,0.6,1,1))
+    pblow = memby_func(propBlack, 0, 0, 0.3, 0.4)
+    pbmed = memby_func(propBlack, 0.3, 0.4, 0.4, 0.5)
+    pbhigh = memby_func(propBlack, 0.4,0.5,1,1)
 
-    mfx_lplow = fuzz.trapmf(x, (0, 0, 0.3, 0.4))
-    mfx_lpmed = fuzz.trapmf(x, (0.3,0.4, 0.6, 0.7))
-    mfx_lphigh = fuzz.trapmf(x, (0.6,0.7,1,1))
+    tplow = memby_func(topProp, 0,0,0.3,0.4)
+    tpmed = memby_func(topProp, 0.3,0.4,0.5,0.6)
+    tphigh = memby_func(topProp, 0.5,0.6,1,1)
 
-    scaled_pb = int(propBlack * 1000)
-    scaled_tp = int(topProp * 1000)
-    scaled_lp = int(leftProp * 1000)
+    lplow = memby_func(leftProp, 0, 0, 0.3, 0.4)
+    lpmed = memby_func(leftProp, 0.3,0.4, 0.6, 0.7)
+    lphigh = memby_func(leftProp, 0.6,0.7,1,1)
+
+
+
+    print("PB Values: ")
+
+    print("pblow: ", pblow)
+    print("pbmed: ", pbmed)
+    print("pbhigh: ", pbhigh)
+    print()
 
     
+    print("TP Values: ")
+    print("tplow: ", tplow)
+    print("tpmed: ", tpmed)
+    print("tphigh: ", tphigh)
+    print()
 
-    print(scaled_pb,scaled_tp, scaled_lp)
-    # compute rule strengths
-    # using Godel t/s-norms (min/max)
+
+    print("LP Values: ")
+    print("lplow: ", lplow)
+    print("lpmed: ", lpmed)
+    print("lphigh: ", lphigh)
+    print()
+
 
     #Rule  strengths
-    str_rule1 = min(mfx_pbmed[scaled_pb], max(mfx_tpmed[scaled_tp], mfx_lpmed[scaled_lp]))
-    str_rule2 = min(min(mfx_pbhigh[scaled_pb], mfx_tpmed[scaled_tp]), mfx_lpmed[scaled_lp])
-    str_rule3 = max(min(mfx_lplow[scaled_lp], mfx_tpmed[scaled_tp]), mfx_lphigh[scaled_lp])
-    str_rule4 = min(min(mfx_pbmed[scaled_pb], mfx_tpmed[scaled_tp]), mfx_lphigh[scaled_lp])
-    str_rule5 = min(min(mfx_pbhigh[scaled_pb], mfx_tpmed[scaled_tp]), mfx_lphigh[scaled_lp])
+    str_rule1 = min(pbmed, max(tpmed, lpmed))
+    print("RS1: ", str_rule1)
+    print("pbmed ^ (tpmed or lpmed)")
 
-    
-    
-    
-    
-    
+    str_rule2 = min(min(pbhigh, tpmed), lpmed)
+    print("RS2: ", str_rule2)
+    print("pbhigh ^ tpmed ^ lpmed ")
 
-        
+    str_rule3 = max(min(pblow, tpmed), lphigh)
+    print("RS3: ", str_rule3)
+    print("(pblow ^ tpmed) or lphigh")
+    str_rule4 = min(min(pbmed, tpmed), lphigh)
+    str_rule5 = min(min(pbhigh, tpmed), lphigh)
+
+
+    a = [str_rule1, str_rule2, str_rule3, str_rule4, str_rule5]
+
+
+    print()        
+    print()        
+    print()        
     # highest_membership_class is a string indicating the highest membership class, either "A", "B", "C", "D", or "E"
     # class_memberships is a four element list indicating the membership in each class in the order [A value, B value, C value, D value, E value]
     return highest_membership_class, class_memberships
