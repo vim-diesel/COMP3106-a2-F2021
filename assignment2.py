@@ -3,6 +3,7 @@
 
 from csv import reader
 import numpy as np
+from numpy.core.fromnumeric import argmax
 
 
 
@@ -23,23 +24,20 @@ def naive_bayes_classifier(input_filepath):
         imageHeight = len(row_list)  #  number of rows/pixels in image
         imageWidth = len(row_list[0][0].split(','))  # number of pixels
 
-        row_number = 0   # tracking row number
-        pixel_number = 0  # tracking pixel number
+        row_number = 1   # tracking row number
+        pixel_number = 1  # tracking pixel number
         blackTotal = 0  # the # of black pixels in the image
         blackTopTotal = 0
         blackLeftTotal = 0
         for row in allRows:  # iterate through each pixel and add up black pixels
-            pixel_number = 0
+            pixel_number = 1
             for pixel in row:
-
                 if pixel == '1':   # check if pixel is black
                     blackTotal += 1    # add to total black pixels
-
                     if pixel_number <= (imageWidth/2):
                         blackLeftTotal += 1  # check if on left side of image
                     if row_number <= (imageHeight/2):
                         blackTopTotal += 1  # check if on top half of image
-
                 pixel_number += 1
             row_number += 1
 
@@ -49,16 +47,6 @@ def naive_bayes_classifier(input_filepath):
         topProp = float(blackTopTotal / blackTotal)
         leftProp = float(blackLeftTotal / blackTotal)
 
-        # value check
-
-        print()
-        print('BT: ', blackTotal)
-        print('BTop: ', blackTopTotal)
-        print('BLeft: ', blackLeftTotal)
-        ####
-
-        print("propBlack: ", round(propBlack,2))
-        print()
 
         
 
@@ -140,62 +128,32 @@ def fuzzy_classifier(input_filepath):
     lphigh = memby_func(leftProp, 0.6,0.7,1,1)
 
 
-
-    print("PB Values: ")
-
-    print("pblow: ", pblow)
-    print("pbmed: ", pbmed)
-    print("pbhigh: ", pbhigh)
-    print()
-
-    
-    print("TP Values: ")
-    print("tplow: ", tplow)
-    print("tpmed: ", tpmed)
-    print("tphigh: ", tphigh)
-    print()
-
-
-    print("LP Values: ")
-    print("lplow: ", lplow)
-    print("lpmed: ", lpmed)
-    print("lphigh: ", lphigh)
-    print()
-
-
     #Rule  strengths
     str_rule1 = min(pbmed, max(tpmed, lpmed))
-    print("RS1: ", str_rule1)
-    print("pbmed ^ (tpmed or lpmed)")
-    print()
-
     str_rule2 = min(min(pbhigh, tpmed), lpmed)
-    print("RS2: ", str_rule2)
-    print("pbhigh ^ tpmed ^ lpmed ")
-    print()
-
     str_rule3 = max(min(pblow, tpmed), lphigh)
-    print("RS3: ", str_rule3)
-    print("(pblow ^ tpmed) or lphigh")
-    print()
-
     str_rule4 = min(min(pbmed, tpmed), lphigh)
-    print("RS4: ", str_rule4)
-    print("pbmed ^ tpmed ^ lphigh")
-    print()
-
     str_rule5 = min(min(pbhigh, tpmed), lphigh)
-    print("RS5: ", str_rule5)
-    print("pbhigh ^ tpmed ^ lphigh")
-    print()
-
 
     a = [str_rule1, str_rule2, str_rule3, str_rule4, str_rule5]
 
+    def get_class(i):
+        i+=1
+        if i == 1:
+            return "A"
+        elif i == 2:
+            return "B"
+        elif i == 3:
+            return "C"
+        elif i==4:
+            return "D"
+        elif i==5:
+            return "E"
 
-    print()        
-    print()        
-    print()        
+    highest_membership_class = get_class(argmax(a))
+    class_memberships = a
+
+   
     # highest_membership_class is a string indicating the highest membership class, either "A", "B", "C", "D", or "E"
     # class_memberships is a four element list indicating the membership in each class in the order [A value, B value, C value, D value, E value]
     return highest_membership_class, class_memberships
