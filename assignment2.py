@@ -1,12 +1,7 @@
-#!/usr/bin/env python
-
-
 from csv import reader
 import numpy as np
-from numpy.core.fromnumeric import argmax
-
-
-
+import math
+from numpy.core.fromnumeric import argmax, mean
 
 def naive_bayes_classifier(input_filepath):
     # input is the full file path to a CSV file containing a matrix representation of a black-and-white image
@@ -48,18 +43,24 @@ def naive_bayes_classifier(input_filepath):
         leftProp = float(blackLeftTotal / blackTotal)
 
         def memby_func(x, u, o):
-            return ((1 / np.sqrt(2*np.pi* pow(o,2))) * np.exp( -1/2 * pow( ((x-u)/o), 2) ))
+            return ((1 / np.sqrt(2*np.pi* pow(o,2))) * np.exp( -1/2 * pow((x-u)/o, 2) ))
 
-        a_pb = memby_func(propBlack, 0.38, 0.06)
-        a_tp = memby_func(topProp, 0.46, 0.12)
-        a_lp = memby_func(leftProp, 0.50, 0.09)
+        def normpdf(x, avg, sd):
+            var = float(sd)**2
+            denom = (2*math.pi*var)**0.5
+            num = math.exp(-(float(x)-float(avg))**2/(2*var))
+            return num/denom
+
+        a_pb = normpdf(propBlack, 0.38, 0.06)
+        a_tp = normpdf(topProp, 0.46, 0.12)
+        a_lp = normpdf(leftProp, 0.50, 0.09)
 
         print(a_pb, a_tp, a_lp)
         
     print()
     print()
-    print()
-    print()
+    most_likely_class = ''
+    class_probabilities = []
     # most_likely_class is a string indicating the most likely class, either "A", "B", "C", "D", or "E"
     # class_probabilities is a five element list indicating the probability of each class in the order [A probability, B probability, C probability, D probability, E probability]
     return most_likely_class, class_probabilities
