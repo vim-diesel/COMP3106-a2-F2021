@@ -47,9 +47,19 @@ def naive_bayes_classifier(input_filepath):
         topProp = float(blackTopTotal / blackTotal)
         leftProp = float(blackLeftTotal / blackTotal)
 
+        def memby_func(x, u, o):
+            return ((1 / np.sqrt(2*np.pi* pow(o,2))) * np.exp( -1/2 * pow( ((x-u)/o), 2) ))
 
+        a_pb = memby_func(propBlack, 0.38, 0.06)
+        a_tp = memby_func(topProp, 0.46, 0.12)
+        a_lp = memby_func(leftProp, 0.50, 0.09)
+
+        print(a_pb, a_tp, a_lp)
         
-
+    print()
+    print()
+    print()
+    print()
     # most_likely_class is a string indicating the most likely class, either "A", "B", "C", "D", or "E"
     # class_probabilities is a five element list indicating the probability of each class in the order [A probability, B probability, C probability, D probability, E probability]
     return most_likely_class, class_probabilities
@@ -67,8 +77,8 @@ def fuzzy_classifier(input_filepath):
         row_obj = row[0].split(',')
         allRows.append(row_obj)
     
-    imageHeight = len(row_list)  #  number of rows/pixels in image
-    imageWidth = len(row_list[0][0].split(','))  # number of pixels
+    imageHeight = len(row_list)  #  number of rows in image
+    imageWidth = len(row_list[0][0].split(','))  # number of pixels in a row
     row_number = 1   # tracking row number
     pixel_number = 1  # tracking pixel number
     blackTotal = 0  # the # of black pixels in the image
@@ -91,13 +101,6 @@ def fuzzy_classifier(input_filepath):
     propBlack = float(blackTotal / totalPixels)
     topProp = float(blackTopTotal / blackTotal)
     leftProp = float(blackLeftTotal / blackTotal)
-    # value check
-    print()
-    print('propBlack: ', propBlack)
-    print('topProp: ', topProp)
-    print('leftProp: ', leftProp)
-    ####
-    print()
 
     # membership functions
     def memby_func(x,a,b,c,d):
