@@ -81,13 +81,13 @@ def fuzzy_classifier(input_filepath):
     
     imageHeight = len(row_list)  #  number of rows/pixels in image
     imageWidth = len(row_list[0][0].split(','))  # number of pixels
-    row_number = 0   # tracking row number
-    pixel_number = 0  # tracking pixel number
+    row_number = 1   # tracking row number
+    pixel_number = 1  # tracking pixel number
     blackTotal = 0  # the # of black pixels in the image
     blackTopTotal = 0
     blackLeftTotal = 0
     for row in allRows:  # iterate through each pixel and add up black pixels
-        pixel_number = 0
+        pixel_number = 1
         for pixel in row:
             if pixel == '1':   # check if pixel is black
                 blackTotal += 1    # add to total black pixels
@@ -110,19 +110,17 @@ def fuzzy_classifier(input_filepath):
     print('leftProp: ', leftProp)
     ####
     print()
-    
-    x = np.arange(0.,1.,0.001) # our domain from 0 to 1
 
     # membership functions
     def memby_func(x,a,b,c,d):
         if x <= a:
             return 0
         elif a < x < b:
-            return (x-a)/(b-a)
+            return min((x-a)/(b-a), 1)
         elif b<=x<=c:
             return 1
         elif c < x < d:
-            return (d-x)/(d-c)
+            return max((d-x)/(d-c), 0)
         elif d <= x:
             return 0
         else:
@@ -169,21 +167,27 @@ def fuzzy_classifier(input_filepath):
     str_rule1 = min(pbmed, max(tpmed, lpmed))
     print("RS1: ", str_rule1)
     print("pbmed ^ (tpmed or lpmed)")
+    print()
 
     str_rule2 = min(min(pbhigh, tpmed), lpmed)
     print("RS2: ", str_rule2)
     print("pbhigh ^ tpmed ^ lpmed ")
+    print()
 
     str_rule3 = max(min(pblow, tpmed), lphigh)
     print("RS3: ", str_rule3)
     print("(pblow ^ tpmed) or lphigh")
+    print()
 
     str_rule4 = min(min(pbmed, tpmed), lphigh)
     print("RS4: ", str_rule4)
     print("pbmed ^ tpmed ^ lphigh")
+    print()
+
     str_rule5 = min(min(pbhigh, tpmed), lphigh)
     print("RS5: ", str_rule5)
     print("pbhigh ^ tpmed ^ lphigh")
+    print()
 
 
     a = [str_rule1, str_rule2, str_rule3, str_rule4, str_rule5]
