@@ -146,7 +146,9 @@ def fuzzy_classifier(input_filepath):
     scaled_tp = int(topProp * 1000)
     scaled_lp = int(leftProp * 1000)
 
-    print(scaled_lp,scaled_pb,scaled_tp)
+    
+
+    print(scaled_pb,scaled_tp, scaled_lp)
     # compute rule strengths
     # using Godel t/s-norms (min/max)
 
@@ -154,12 +156,13 @@ def fuzzy_classifier(input_filepath):
     str_rule1 = min(mfx_pbmed[scaled_pb], max(mfx_tpmed[scaled_tp], mfx_lpmed[scaled_lp]))
     str_rule2 = min(min(mfx_pbhigh[scaled_pb], mfx_tpmed[scaled_tp]), mfx_lpmed[scaled_lp])
     str_rule3 = max(min(mfx_lplow[scaled_lp], mfx_tpmed[scaled_tp]), mfx_lphigh[scaled_lp])
+    str_rule4 = min(min(mfx_pbmed[scaled_pb], mfx_tpmed[scaled_tp]), mfx_lphigh[scaled_lp])
+    str_rule5 = min(min(mfx_pbhigh[scaled_pb], mfx_tpmed[scaled_tp]), mfx_lphigh[scaled_lp])
 
-
-    plt.plot(mfx_pbhigh)
-    plt.show()
-    print(str_rule1, str_rule2, str_rule3)
-
+    mf_output1 = min(mfx_)
+    
+    
+    
     
 
         
