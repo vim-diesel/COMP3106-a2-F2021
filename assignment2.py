@@ -2,7 +2,6 @@
 
 
 from csv import reader
-from os import close
 
 import skfuzzy as fuzz
 import numpy as np
@@ -159,7 +158,7 @@ def fuzzy_classifier(input_filepath):
     str_rule4 = min(min(mfx_pbmed[scaled_pb], mfx_tpmed[scaled_tp]), mfx_lphigh[scaled_lp])
     str_rule5 = min(min(mfx_pbhigh[scaled_pb], mfx_tpmed[scaled_tp]), mfx_lphigh[scaled_lp])
 
-    mf_output1 = min(mfx_)
+    
     
     
     
