@@ -177,8 +177,13 @@ def fuzzy_classifier(input_filepath):
     str_rule3 = max(min(pblow, tpmed), lphigh)
     print("RS3: ", str_rule3)
     print("(pblow ^ tpmed) or lphigh")
+
     str_rule4 = min(min(pbmed, tpmed), lphigh)
+    print("RS4: ", str_rule4)
+    print("pbmed ^ tpmed ^ lphigh")
     str_rule5 = min(min(pbhigh, tpmed), lphigh)
+    print("RS5: ", str_rule5)
+    print("pbhigh ^ tpmed ^ lphigh")
 
 
     a = [str_rule1, str_rule2, str_rule3, str_rule4, str_rule5]
