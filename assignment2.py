@@ -3,6 +3,7 @@ import numpy as np
 import math
 from numpy.core.fromnumeric import argmax, mean
 
+
 def naive_bayes_classifier(input_filepath):
     # input is the full file path to a CSV file containing a matrix representation of a black-and-white image
 
@@ -36,12 +37,14 @@ def naive_bayes_classifier(input_filepath):
                 pixel_number += 1
             row_number += 1
 
-        # calculations
+        # calculations of image
         totalPixels = imageWidth * imageHeight
         propBlack = float(blackTotal / totalPixels)
         topProp = float(blackTopTotal / blackTotal)
         leftProp = float(blackLeftTotal / blackTotal)
 
+
+        # Member function 
         def memby_func(x, u, o):
             return ((1 / np.sqrt(2*np.pi* pow(o,2))) * np.exp( -1/2 * pow((x-u)/o, 2) ))
 
@@ -51,9 +54,30 @@ def naive_bayes_classifier(input_filepath):
             num = math.exp(-(float(x)-float(avg))**2/(2*var))
             return num/denom
 
+        # calculate outputs of member functions
         a_pb = normpdf(propBlack, 0.38, 0.06)
         a_tp = normpdf(topProp, 0.46, 0.12)
         a_lp = normpdf(leftProp, 0.50, 0.09)
+
+        b_pb = normpdf(propBlack, 0.51, 0.06)
+        b_tp = normpdf(topProp, 0.49, 0.12)
+        b_lp = normpdf(leftProp, 0.57, 0.09)
+
+        # TODO Change values...
+        c_pb = normpdf(propBlack, 0.38, 0.06)
+        c_tp = normpdf(topProp, 0.46, 0.12)
+        c_lp = normpdf(leftProp, 0.50, 0.09)
+
+        d_pb = normpdf(propBlack, 0.38, 0.06)
+        d_tp = normpdf(topProp, 0.46, 0.12)
+        d_lp = normpdf(leftProp, 0.50, 0.09)
+
+        e_pb = normpdf(propBlack, 0.38, 0.06)
+        e_tp = normpdf(topProp, 0.46, 0.12)
+        e_lp = normpdf(leftProp, 0.50, 0.09)
+
+        prob_a = a_pb*a_lp*a_tp * 0.28 
+        print(prob_a)
 
         print(a_pb, a_tp, a_lp)
         
