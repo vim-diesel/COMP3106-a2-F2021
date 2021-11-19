@@ -1,7 +1,7 @@
 from csv import reader
 import numpy as np
 import math
-from numpy.core.fromnumeric import argmax, mean
+from numpy.core.fromnumeric import argmax
 
 
 def naive_bayes_classifier(input_filepath):
@@ -44,10 +44,7 @@ def naive_bayes_classifier(input_filepath):
         leftProp = float(blackLeftTotal / blackTotal)
 
 
-        # Member function 
-        def memby_func(x, u, o):
-            return ((1 / np.sqrt(2*np.pi* pow(o,2))) * np.exp( -1/2 * pow((x-u)/o, 2) ))
-
+        # Probability Distribution function 
         def normpdf(x, avg, sd):
             var = float(sd)**2
             denom = (2*math.pi*var)**0.5
@@ -55,38 +52,38 @@ def naive_bayes_classifier(input_filepath):
             return num/denom
 
         # calculate outputs of member functions
-        a_pb = memby_func(propBlack, 0.38, 0.06)
-        a_tp = memby_func(topProp, 0.46, 0.12)
-        a_lp = memby_func(leftProp, 0.50, 0.09)
+        a_pb = normpdf(propBlack, 0.38, 0.06)
+        a_tp = normpdf(topProp, 0.46, 0.12)
+        a_lp = normpdf(leftProp, 0.50, 0.09)
 
-        b_pb = memby_func(propBlack, 0.51, 0.06)
-        b_tp = memby_func(topProp, 0.49, 0.12)
-        b_lp = memby_func(leftProp, 0.57, 0.09)
+        b_pb = normpdf(propBlack, 0.51, 0.06)
+        b_tp = normpdf(topProp, 0.49, 0.12)
+        b_lp = normpdf(leftProp, 0.57, 0.09)
 
-        c_pb = memby_func(propBlack, 0.31, 0.06)
-        c_tp = memby_func(topProp, 0.37, 0.09)
-        c_lp = memby_func(leftProp, 0.64, 0.06)
+        c_pb = normpdf(propBlack, 0.31, 0.06)
+        c_tp = normpdf(topProp, 0.37, 0.09)
+        c_lp = normpdf(leftProp, 0.64, 0.06)
 
-        d_pb = memby_func(propBlack, 0.39, 0.06)
-        d_tp = memby_func(topProp, 0.47, 0.09)
-        d_lp = memby_func(leftProp, 0.57, 0.03)
+        d_pb = normpdf(propBlack, 0.39, 0.06)
+        d_tp = normpdf(topProp, 0.47, 0.09)
+        d_lp = normpdf(leftProp, 0.57, 0.03)
 
-        e_pb = memby_func(propBlack, 0.43, 0.12)
-        e_tp = memby_func(topProp, 0.45, 0.15)
-        e_lp = memby_func(leftProp, 0.65, 0.09)
+        e_pb = normpdf(propBlack, 0.43, 0.12)
+        e_tp = normpdf(topProp, 0.45, 0.15)
+        e_lp = normpdf(leftProp, 0.65, 0.09)
 
-        prob_a = a_pb*a_lp*a_tp * 0.28
-        prob_b = b_pb*b_lp*b_tp * 0.05
-        prob_c = c_pb*c_lp*c_tp * 0.10
-        prob_d = d_pb*d_lp*d_tp * 0.15
-        prob_e = e_pb*e_lp*e_tp * 0.42
+        numerator_a = a_pb*a_lp*a_tp * 0.28
+        numerator_b = b_pb*b_lp*b_tp * 0.05
+        numerator_c = c_pb*c_lp*c_tp * 0.10
+        numerator_d = d_pb*d_lp*d_tp * 0.15
+        numerator_e = e_pb*e_lp*e_tp * 0.42
 
-        sum = prob_a + prob_b + prob_c + prob_d + prob_d + prob_e
+"""         sum = prob_a + prob_b + prob_c + prob_d + prob_d + prob_e
         prob_a = prob_a / sum
         prob_b = prob_b / sum    
         prob_c = prob_c / sum    
         prob_d = prob_d / sum    
-        prob_e = prob_e / sum    
+        prob_e = prob_e / sum     """
 
 
     a = [prob_a, prob_b, prob_c, prob_d, prob_e]    
