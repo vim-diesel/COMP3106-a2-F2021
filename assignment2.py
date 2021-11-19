@@ -63,28 +63,53 @@ def naive_bayes_classifier(input_filepath):
         b_tp = normpdf(topProp, 0.49, 0.12)
         b_lp = normpdf(leftProp, 0.57, 0.09)
 
-        # TODO Change values...
-        c_pb = normpdf(propBlack, 0.38, 0.06)
-        c_tp = normpdf(topProp, 0.46, 0.12)
-        c_lp = normpdf(leftProp, 0.50, 0.09)
+        c_pb = normpdf(propBlack, 0.31, 0.06)
+        c_tp = normpdf(topProp, 0.37, 0.09)
+        c_lp = normpdf(leftProp, 0.64, 0.06)
 
-        d_pb = normpdf(propBlack, 0.38, 0.06)
-        d_tp = normpdf(topProp, 0.46, 0.12)
-        d_lp = normpdf(leftProp, 0.50, 0.09)
+        d_pb = normpdf(propBlack, 0.39, 0.06)
+        d_tp = normpdf(topProp, 0.47, 0.09)
+        d_lp = normpdf(leftProp, 0.57, 0.03)
 
-        e_pb = normpdf(propBlack, 0.38, 0.06)
-        e_tp = normpdf(topProp, 0.46, 0.12)
-        e_lp = normpdf(leftProp, 0.50, 0.09)
+        e_pb = normpdf(propBlack, 0.43, 0.12)
+        e_tp = normpdf(topProp, 0.45, 0.15)
+        e_lp = normpdf(leftProp, 0.65, 0.09)
 
-        prob_a = a_pb*a_lp*a_tp * 0.28 
-        print(prob_a)
+        prob_a = a_pb*a_lp*a_tp * 0.28
+        prob_b = b_pb*b_lp*b_tp * 0.05
+        prob_c = c_pb*c_lp*c_tp * 0.10
+        prob_d = d_pb*d_lp*d_tp * 0.15
+        prob_e = e_pb*e_lp*e_tp * 0.42
 
-        print(a_pb, a_tp, a_lp)
-        
+        sum = prob_a + prob_b + prob_c + prob_d + prob_d + prob_e
+        prob_a = prob_a / sum
+        prob_b = prob_b / sum    
+        prob_c = prob_c / sum    
+        prob_d = prob_d / sum    
+        prob_e = prob_e / sum    
+
+
+    a = [prob_a, prob_b, prob_c, prob_d, prob_e]    
+
+    def get_class(i):
+        i+=1
+        if i == 1:
+            return "A"
+        elif i == 2:
+            return "B"
+        elif i == 3:
+            return "C"
+        elif i==4:
+            return "D"
+        elif i==5:
+            return "E"
+    
+
+
     print()
     print()
-    most_likely_class = ''
-    class_probabilities = []
+    most_likely_class = get_class(argmax(a))
+    class_probabilities = a
     # most_likely_class is a string indicating the most likely class, either "A", "B", "C", "D", or "E"
     # class_probabilities is a five element list indicating the probability of each class in the order [A probability, B probability, C probability, D probability, E probability]
     return most_likely_class, class_probabilities
