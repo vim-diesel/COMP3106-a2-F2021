@@ -103,11 +103,7 @@ def naive_bayes_classifier(input_filepath):
             return "D"
         elif i==5:
             return "E"
-    
 
-
-    print()
-    print()
     most_likely_class = get_class(argmax(a))
     class_probabilities = a
     # most_likely_class is a string indicating the most likely class, either "A", "B", "C", "D", or "E"
