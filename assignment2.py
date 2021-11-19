@@ -55,25 +55,25 @@ def naive_bayes_classifier(input_filepath):
             return num/denom
 
         # calculate outputs of member functions
-        a_pb = normpdf(propBlack, 0.38, 0.06)
-        a_tp = normpdf(topProp, 0.46, 0.12)
-        a_lp = normpdf(leftProp, 0.50, 0.09)
+        a_pb = memby_func(propBlack, 0.38, 0.06)
+        a_tp = memby_func(topProp, 0.46, 0.12)
+        a_lp = memby_func(leftProp, 0.50, 0.09)
 
-        b_pb = normpdf(propBlack, 0.51, 0.06)
-        b_tp = normpdf(topProp, 0.49, 0.12)
-        b_lp = normpdf(leftProp, 0.57, 0.09)
+        b_pb = memby_func(propBlack, 0.51, 0.06)
+        b_tp = memby_func(topProp, 0.49, 0.12)
+        b_lp = memby_func(leftProp, 0.57, 0.09)
 
-        c_pb = normpdf(propBlack, 0.31, 0.06)
-        c_tp = normpdf(topProp, 0.37, 0.09)
-        c_lp = normpdf(leftProp, 0.64, 0.06)
+        c_pb = memby_func(propBlack, 0.31, 0.06)
+        c_tp = memby_func(topProp, 0.37, 0.09)
+        c_lp = memby_func(leftProp, 0.64, 0.06)
 
-        d_pb = normpdf(propBlack, 0.39, 0.06)
-        d_tp = normpdf(topProp, 0.47, 0.09)
-        d_lp = normpdf(leftProp, 0.57, 0.03)
+        d_pb = memby_func(propBlack, 0.39, 0.06)
+        d_tp = memby_func(topProp, 0.47, 0.09)
+        d_lp = memby_func(leftProp, 0.57, 0.03)
 
-        e_pb = normpdf(propBlack, 0.43, 0.12)
-        e_tp = normpdf(topProp, 0.45, 0.15)
-        e_lp = normpdf(leftProp, 0.65, 0.09)
+        e_pb = memby_func(propBlack, 0.43, 0.12)
+        e_tp = memby_func(topProp, 0.45, 0.15)
+        e_lp = memby_func(leftProp, 0.65, 0.09)
 
         prob_a = a_pb*a_lp*a_tp * 0.28
         prob_b = b_pb*b_lp*b_tp * 0.05
