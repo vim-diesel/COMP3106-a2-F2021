@@ -51,7 +51,7 @@ def naive_bayes_classifier(input_filepath):
             num = math.exp(-(float(x)-float(avg))**2/(2*var))
             return num/denom
 
-        # calculate outputs of member functions
+        # calculate P(e | h)
         a_pb = normpdf(propBlack, 0.38, 0.06)
         a_tp = normpdf(topProp, 0.46, 0.12)
         a_lp = normpdf(leftProp, 0.50, 0.09)
@@ -72,18 +72,18 @@ def naive_bayes_classifier(input_filepath):
         e_tp = normpdf(topProp, 0.45, 0.15)
         e_lp = normpdf(leftProp, 0.65, 0.09)
 
-        numerator_a = a_pb*a_lp*a_tp * 0.28
-        numerator_b = b_pb*b_lp*b_tp * 0.05
-        numerator_c = c_pb*c_lp*c_tp * 0.10
-        numerator_d = d_pb*d_lp*d_tp * 0.15
-        numerator_e = e_pb*e_lp*e_tp * 0.42
+        prob_a = a_pb*a_lp*a_tp * 0.28
+        prob_b = b_pb*b_lp*b_tp * 0.05
+        prob_c = c_pb*c_lp*c_tp * 0.10
+        prob_d = d_pb*d_lp*d_tp * 0.15
+        prob_e = e_pb*e_lp*e_tp * 0.42
 
-"""         sum = prob_a + prob_b + prob_c + prob_d + prob_d + prob_e
+        sum = prob_a + prob_b + prob_c + prob_d + prob_d + prob_e
         prob_a = prob_a / sum
         prob_b = prob_b / sum    
         prob_c = prob_c / sum    
         prob_d = prob_d / sum    
-        prob_e = prob_e / sum     """
+        prob_e = prob_e / sum     
 
 
     a = [prob_a, prob_b, prob_c, prob_d, prob_e]    
@@ -103,6 +103,7 @@ def naive_bayes_classifier(input_filepath):
 
     most_likely_class = get_class(argmax(a))
     class_probabilities = a
+    
     # most_likely_class is a string indicating the most likely class, either "A", "B", "C", "D", or "E"
     # class_probabilities is a five element list indicating the probability of each class in the order [A probability, B probability, C probability, D probability, E probability]
     return most_likely_class, class_probabilities
